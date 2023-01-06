@@ -10,10 +10,11 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import java.util.Random
+import kotlin.concurrent.timer
 import kotlin.streams.toList
 
 class MainActivity : AppCompatActivity() {
-    @SuppressLint("CutPasteId")
+    @SuppressLint("CutPasteId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,8 +28,8 @@ class MainActivity : AppCompatActivity() {
             val listLen = if (findViewById<EditText>(R.id.numberOfNumbersToSort).text.toString()!="")
                 findViewById<EditText>(R.id.numberOfNumbersToSort).text.toString().toInt()
             else 10
-
             AsyncTask.execute {
+                val currentTime = System.currentTimeMillis()
                 val listToSort = Random().ints(listLen.toLong()).toList().toMutableList()
                 for (element in listToSort){
                     val textToAdd = TextView(this.baseContext)
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread { findViewById<LinearLayout>(R.id.unsorted).addView(textToAdd) }
                 }
                 val listSorted:List<Int> = sortWithProgress(listToSort, findViewById(R.id.progressBar))
+                runOnUiThread { findViewById<TextView>(R.id.time).text="Time: ${"%.2f".format((System.currentTimeMillis()-currentTime).toDouble()/1000)} s" }
                 for (element in listSorted) {
                     val textToAdd = TextView(baseContext)
                     textToAdd.text = "$element"
@@ -58,7 +60,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             progressBar.progress = ((i + 1).toDouble() / (size-1) * 100).toInt()
-            println(progressBar.progress)
         }
         return list
     }

@@ -23,7 +23,9 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.853"
-            android:hint="Amount of Numbers to Sort"/>
+            android:hint="Amount of Numbers to Sort"
+            android:digits="1234567890"
+    />
     <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="364dp"
@@ -48,4 +50,12 @@
         </LinearLayout>
 
     </ScrollView>
+    <TextView
+            android:text="Time: Xs"
+            android:layout_width="171dp"
+            android:layout_height="43dp" android:id="@+id/time"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.629"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent" android:textSize="24sp" android:textAlignment="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
