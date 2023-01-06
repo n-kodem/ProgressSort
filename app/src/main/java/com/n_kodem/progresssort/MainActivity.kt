@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import java.util.Random
 import kotlin.streams.toList
 
@@ -19,20 +21,33 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.sortBtn).setOnClickListener {
             findViewById<ProgressBar>(R.id.progressBar).progress=0
+            findViewById<LinearLayout>(R.id.unsorted).removeAllViews()
+            findViewById<LinearLayout>(R.id.sorted).removeAllViews()
+
             val listLen = if (findViewById<EditText>(R.id.numberOfNumbersToSort).text.toString()!="")
                 findViewById<EditText>(R.id.numberOfNumbersToSort).text.toString().toInt()
             else 10
 
-            val listToSort = Random().ints(listLen.toLong()).toList().toMutableList()
             AsyncTask.execute {
-                val sortedList = sortWithProgress(listToSort,findViewById(R.id.progressBar))
+                val listToSort = Random().ints(listLen.toLong()).toList().toMutableList()
+                for (element in listToSort){
+                    val textToAdd = TextView(this.baseContext)
+                    textToAdd.text="$element"
+                    runOnUiThread { findViewById<LinearLayout>(R.id.unsorted).addView(textToAdd) }
+                }
+                val listSorted:List<Int> = sortWithProgress(listToSort, findViewById(R.id.progressBar))
+                for (element in listSorted) {
+                    val textToAdd = TextView(baseContext)
+                    textToAdd.text = "$element"
+                    runOnUiThread { findViewById<LinearLayout>(R.id.sorted).addView(textToAdd) }
+
+                }
+
             }
-
-
         }
 
     }
-    fun sortWithProgress(list: MutableList<Int>, progressBar: ProgressBar): List<Int> {
+    private fun sortWithProgress(list: MutableList<Int>, progressBar: ProgressBar): List<Int> {
         val size = list.size
         for (i in 0 until size - 1) {
             for (j in 0 until size - i - 1) {
